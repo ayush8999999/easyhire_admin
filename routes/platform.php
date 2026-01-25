@@ -25,6 +25,8 @@ use App\Orchid\Screens\CourseListScreen;
 use App\Orchid\Screens\CourseCreateScreen;
 use App\Orchid\Screens\CourseEditScreen;
 use App\Orchid\Screens\CandidateAppliedListScreen;
+use App\Orchid\Screens\ShortlistedCandidatesScreen;
+use App\Orchid\Screens\RejectedCandidatesScreen;
 use App\Orchid\Screens\CandidateAppliedViewScreen;
 use App\Orchid\Screens\EasyhireUserListScreen;
 use Illuminate\Support\Facades\Route;
@@ -178,6 +180,12 @@ Route::screen('course/{course}/edit', CourseEditScreen::class)
         ->push("Edit: {$course->name}"));
         Route::screen('candidates', CandidateAppliedListScreen::class)
     ->name('platform.candidate.list');
+
+    Route::screen('shortlisted-candidates', ShortlistedCandidatesScreen::class)
+    ->name('platform.candidate.shortlisted');
+
+    Route::screen('rejected-candidates', RejectedCandidatesScreen::class)
+    ->name('platform.candidate.rejected');
 
 Route::screen('candidates/{candidate}', CandidateAppliedViewScreen::class)
     ->name('platform.candidate.view');

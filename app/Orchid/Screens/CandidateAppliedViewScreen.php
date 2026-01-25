@@ -6,6 +6,8 @@ use App\Models\CandidateApplied;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Screen\Sight;
+use Illuminate\Http\Request;
+use Orchid\Support\Facades\Toast;
 
 class CandidateAppliedViewScreen extends Screen
 {
@@ -109,4 +111,15 @@ class CandidateAppliedViewScreen extends Screen
 
         ];
     }
+    public function changeStatus(Request $request)
+{
+    $candidate = CandidateApplied::findOrFail($request->id);
+
+    $candidate->status = $request->status;
+    $candidate->save();
+
+    Toast::success("Status updated to {$request->status}");
+
+    return redirect()->route('platform.candidate.list');
+}
 }

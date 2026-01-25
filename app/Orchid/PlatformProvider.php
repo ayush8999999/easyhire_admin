@@ -62,6 +62,14 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.people')
                 ->route('platform.easyhire.users'),
 
+            Menu::make('Shortlisted Candidates')
+                ->icon('bs.check-circle')
+                ->route('platform.candidate.shortlisted'),
+
+            Menu::make('Rejected Candidates')
+                ->icon('bs.x-circle')
+                ->route('platform.candidate.rejected'),
+
             Menu::make(__('Users'))
                 ->icon('bs.people')
                 ->route('platform.systems.users')

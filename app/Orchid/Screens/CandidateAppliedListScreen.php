@@ -11,6 +11,7 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 use Orchid\Screen\Fields\Group;
+use Orchid\Support\Facades\Toast;
 use Illuminate\Http\Request;
 
 class CandidateAppliedListScreen extends Screen
@@ -322,25 +323,26 @@ class CandidateAppliedListScreen extends Screen
                 TD::make('experience_level', 'Experience')
                     ->alignCenter(),
 
-                // TD::make('status', 'Status')
-                //     ->alignCenter()
-                //     ->render(fn($c) => match ($c->status) {
-                //         'new'         => "<span class='badge bg-primary'>New</span>",
-                //         'reviewed'    => "<span class='badge bg-info'>Reviewed</span>",
-                //         'shortlisted' => "<span class='badge bg-success'>Shortlisted</span>",
-                //         'rejected'    => "<span class='badge bg-danger'>Rejected</span>",
-                //         'hired'       => "<span class='badge bg-dark'>Hired</span>",
-                //         default       => "<span class='badge bg-secondary'>Unknown</span>",
-                //     }),
+                TD::make('status', 'Status')
+                    ->alignCenter()
+                    ->render(fn($c) => match ($c->status) {
+                        'new'         => "<span class='badge bg-primary'>New</span>",
+                        'reviewed'    => "<span class='badge bg-info'>Reviewed</span>",
+                        'shortlisted' => "<span class='badge bg-success'>Shortlisted</span>",
+                        'rejected'    => "<span class='badge bg-danger'>Rejected</span>",
+                        'hired'       => "<span class='badge bg-dark'>Hired</span>",
+                        default       => "<span class='badge bg-secondary'>Unknown</span>",
+                    }),
 
                 TD::make('applied_at', 'Applied On')
                     ->render(fn($c) => date('d M Y', strtotime($c->applied_at)))
                     ->sort(),
 
-              TD::make('Actions')
+                  TD::make('Actions')
     ->alignCenter()
     ->render(fn ($c) => 
-        '<div class="d-flex flex-column gap-1">' .
+        '<div class="d-flex flex-wrap gap-1 justify-content-center">' .
+
             Link::make('View')
                 ->route('platform.candidate.view', $c->id)
                 ->class('btn btn-sm btn-outline-primary')
@@ -352,7 +354,22 @@ class CandidateAppliedListScreen extends Screen
                 ->parameters(['id' => $c->id])
                 ->rawClick()
                 ->class('btn btn-sm btn-outline-success')
+                ->render() .
+
+            Button::make('Shortlist')
+                ->method('changeStatus')
+                ->parameters(['id' => $c->id, 'status' => 'shortlisted'])
+                ->class('btn btn-sm btn-success')
+                ->rawClick()
+                ->render() .
+
+            Button::make('Reject')
+                ->method('changeStatus')
+                ->parameters(['id' => $c->id, 'status' => 'rejected'])
+                ->class('btn btn-sm btn-danger')
+                ->rawClick()
                 ->render()
+
         . '</div>'
     ),
 
@@ -365,4 +382,16 @@ class CandidateAppliedListScreen extends Screen
     {
         return redirect()->route('platform.candidate.list', $request->all());
     }
+    public function changeStatus(Request $request)
+{
+    $candidate = CandidateApplied::findOrFail($request->id);
+
+    $candidate->status = $request->status;
+    $candidate->save();
+
+    \Orchid\Support\Facades\Toast::success("Status updated to {$request->status}");
+
+    return redirect()->back();
+}
+
 }
