@@ -2,10 +2,11 @@
 
 namespace App\Orchid\Screens;
 
-use App\Models\CandidateApplied;          // ✅ IMPORT MODEL
+use App\Models\CandidateApplied;
 use Orchid\Screen\Screen;
-use Orchid\Support\Facades\Layout;        // ✅ IMPORT LAYOUT
-use Orchid\Screen\TD; 
+use Orchid\Support\Facades\Layout;
+use Orchid\Screen\TD;
+use Orchid\Screen\Actions\Link;
 
 class ShortlistedCandidatesScreen extends Screen
 {
@@ -31,8 +32,14 @@ class ShortlistedCandidatesScreen extends Screen
                 TD::make('email', 'Email'),
                 TD::make('applied_at', 'Applied On')
                     ->render(fn($c) => date('d M Y', strtotime($c->applied_at))),
+
+                TD::make('Actions')
+                    ->render(fn($c) =>
+                        Link::make('Schedule Interview')
+                            ->route('platform.interview.schedule', $c->id)
+                            ->class('btn btn-sm btn-primary')
+                    ),
             ]),
         ];
     }
 }
-

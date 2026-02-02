@@ -9,6 +9,7 @@ use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
 use Orchid\Screen\Actions\Menu;
 use Orchid\Support\Color;
+use App\Orchid\Screens\ScheduledInterviewsScreen;
 
 class PlatformProvider extends OrchidServiceProvider
 {
@@ -69,6 +70,10 @@ class PlatformProvider extends OrchidServiceProvider
             Menu::make('Rejected Candidates')
                 ->icon('bs.x-circle')
                 ->route('platform.candidate.rejected'),
+
+            Menu::make('Scheduled Interviews')
+                ->icon('bs.calendar-check')
+                ->route('platform.interviews.list'),    
 
             Menu::make(__('Users'))
                 ->icon('bs.people')

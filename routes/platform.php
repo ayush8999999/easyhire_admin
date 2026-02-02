@@ -30,6 +30,8 @@ use App\Orchid\Screens\RejectedCandidatesScreen;
 use App\Orchid\Screens\CandidateAppliedViewScreen;
 use App\Orchid\Screens\EasyhireUserListScreen;
 use Illuminate\Support\Facades\Route;
+use App\Orchid\Screens\InterviewScheduleScreen;
+use App\Orchid\Screens\ScheduledInterviewsScreen;
 use Tabuna\Breadcrumbs\Trail;
 
 /*
@@ -186,6 +188,12 @@ Route::screen('course/{course}/edit', CourseEditScreen::class)
 
     Route::screen('rejected-candidates', RejectedCandidatesScreen::class)
     ->name('platform.candidate.rejected');
+
+    Route::screen('interview/schedule/{candidate}', InterviewScheduleScreen::class)
+    ->name('platform.interview.schedule');
+
+    Route::screen('interviews', ScheduledInterviewsScreen::class)
+        ->name('platform.interviews.list');
 
 Route::screen('candidates/{candidate}', CandidateAppliedViewScreen::class)
     ->name('platform.candidate.view');

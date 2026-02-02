@@ -361,6 +361,7 @@ class CandidateAppliedListScreen extends Screen
                 ->parameters(['id' => $c->id, 'status' => 'shortlisted'])
                 ->class('btn btn-sm btn-success')
                 ->rawClick()
+                ->disabled($c->status === 'shortlisted')
                 ->render() .
 
             Button::make('Reject')
@@ -368,6 +369,7 @@ class CandidateAppliedListScreen extends Screen
                 ->parameters(['id' => $c->id, 'status' => 'rejected'])
                 ->class('btn btn-sm btn-danger')
                 ->rawClick()
+                ->disabled($c->status === 'rejected')
                 ->render()
 
         . '</div>'
