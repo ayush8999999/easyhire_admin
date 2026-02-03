@@ -12,6 +12,7 @@ use Orchid\Screen\Fields\TextArea;
 use Orchid\Screen\Actions\Button;
 use Illuminate\Http\Request;
 use Orchid\Support\Facades\Toast;
+use App\Services\CandidateMailer;
 
 class InterviewScheduleScreen extends Screen
 {
@@ -67,6 +68,7 @@ class InterviewScheduleScreen extends Screen
 
     public function save(Request $request, CandidateApplied $candidate)
     {
+        // Save interview
         InterviewSchedule::create([
             'candidate_id' => $candidate->id,
             'interview_date' => $request->interview_date,
@@ -76,10 +78,17 @@ class InterviewScheduleScreen extends Screen
             'notes' => $request->notes,
         ]);
 
+        // Update status
         $candidate->status = 'interview_scheduled';
         $candidate->save();
 
-        Toast::success('Interview Scheduled Successfully');
+        // 🔔 LOAD interview relation
+        $candidate->load('interview');
+
+        // 📧 SEND MAIL
+        CandidateMailer::send('interview_scheduled', $candidate);
+
+        Toast::success('Interview Scheduled & Email Sent Successfully');
 
         return redirect()->route('platform.interviews.list');
     }

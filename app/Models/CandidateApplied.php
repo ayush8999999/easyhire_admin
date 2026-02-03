@@ -47,4 +47,13 @@ class CandidateApplied extends Model
         'company_name'=> \Orchid\Filters\Types\Like::class,
         'email'       => \Orchid\Filters\Types\Like::class,
     ];
+
+    public function interview()
+    {
+        return $this->hasOne(
+            \App\Models\InterviewSchedule::class,
+            'candidate_id',
+            'id'
+        );
+    }
 }

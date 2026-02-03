@@ -82,7 +82,10 @@ class ScheduledInterviewsScreen extends Screen
         $candidate->status = $request->status;
         $candidate->save();
 
-        Toast::success("Candidate marked as {$request->status}");
+        // 📧 SEND MAIL
+        \App\Services\CandidateMailer::send($request->status, $candidate);
+
+        Toast::success("Candidate marked as {$request->status} & email sent!");
 
         return redirect()->back();
     }
