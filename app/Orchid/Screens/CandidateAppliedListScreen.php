@@ -4,6 +4,7 @@ namespace App\Orchid\Screens;
 
 use App\Models\CandidateApplied;
 use Orchid\Screen\Screen;
+use App\Services\CandidateMailer;
 use Orchid\Support\Facades\Layout;
 use Orchid\Screen\TD;
 use Orchid\Screen\Actions\Link;
@@ -330,6 +331,7 @@ class CandidateAppliedListScreen extends Screen
                         'reviewed'    => "<span class='badge bg-info'>Reviewed</span>",
                         'shortlisted' => "<span class='badge bg-success'>Shortlisted</span>",
                         'rejected'    => "<span class='badge bg-danger'>Rejected</span>",
+                        'interview_scheduled' => "<span class='badge bg-warning text-dark'>Interview Scheduled</span>",
                         'hired'       => "<span class='badge bg-dark'>Hired</span>",
                         default       => "<span class='badge bg-secondary'>Unknown</span>",
                     }),
@@ -385,15 +387,20 @@ class CandidateAppliedListScreen extends Screen
         return redirect()->route('platform.candidate.list', $request->all());
     }
     public function changeStatus(Request $request)
-{
-    $candidate = CandidateApplied::findOrFail($request->id);
+    {
+        $candidate = CandidateApplied::findOrFail($request->id);
 
-    $candidate->status = $request->status;
-    $candidate->save();
+        $candidate->status = $request->status;
+        $candidate->save();
 
-    \Orchid\Support\Facades\Toast::success("Status updated to {$request->status}");
+        // SEND MAIL
+        if (in_array($request->status, ['shortlisted','rejected'])) {
+            CandidateMailer::send($request->status, $candidate);
+        }
 
-    return redirect()->back();
-}
+        Toast::success("Status updated & email sent!");
+
+        return redirect()->back();
+    }
 
 }

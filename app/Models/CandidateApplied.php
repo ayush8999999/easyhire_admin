@@ -27,6 +27,11 @@ class CandidateApplied extends Model
         'status',
     ];
 
+    protected $casts = [
+        'applied_at'    => 'datetime',
+        'date_of_birth' => 'date',
+    ];
+
     protected $allowedSorts = [
         'id',
         'full_name',

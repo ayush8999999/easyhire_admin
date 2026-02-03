@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
+use App\Orchid\Screens\HiredCandidatesScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
 use App\Orchid\Screens\Examples\ExampleFieldsAdvancedScreen;
@@ -194,6 +195,10 @@ Route::screen('course/{course}/edit', CourseEditScreen::class)
 
     Route::screen('interviews', ScheduledInterviewsScreen::class)
         ->name('platform.interviews.list');
+
+        
+    Route::screen('candidates/hired', HiredCandidatesScreen::class)
+    ->name('platform.candidates.hired');
 
 Route::screen('candidates/{candidate}', CandidateAppliedViewScreen::class)
     ->name('platform.candidate.view');

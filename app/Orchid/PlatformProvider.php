@@ -73,7 +73,11 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make('Scheduled Interviews')
                 ->icon('bs.calendar-check')
-                ->route('platform.interviews.list'),    
+                ->route('platform.interviews.list'),
+                
+            Menu::make('Hired Candidates')
+                ->icon('bs.check-circle')
+                ->route('platform.candidates.hired'),        
 
             Menu::make(__('Users'))
                 ->icon('bs.people')
